@@ -1,4 +1,4 @@
-﻿namespace Flashcards.Model.Entities
+﻿namespace Flashcards.Domain.Entities
 {
     public class ClassEntity
     {
