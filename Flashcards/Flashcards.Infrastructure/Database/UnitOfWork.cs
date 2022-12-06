@@ -40,8 +40,6 @@ namespace Flashcards.Infrastructure.Database
         {
             if (_transaction != null)
                 _transaction.Dispose();
-
-            _transaction = null;
         }
 
         public void Rollback()
