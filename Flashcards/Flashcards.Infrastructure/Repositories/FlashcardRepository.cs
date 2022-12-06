@@ -5,26 +5,26 @@ using Flashcards.Domain.Interfaces.Repositories;
 
 namespace Flashcards.Infrastructure.Repositories
 {
-    public class ClassRepository : IClassRepository
+    public class FlashcardRepository : IFlashcardRepository
     {
-
         private readonly IUnitOfWork _unitOfWork;
 
-        public ClassRepository(IUnitOfWork unitOfWork) 
+        public FlashcardRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public Task Add(ClassEntity classEntity)
+        public Task Add(FlashcardEntity flashcard)
         {
-            var sql = @"INSERT INTO CLASS
-                        (ID_USER,NAME)
+            var sql = @"INSERT INTO FLASHCARD
+                        (ID_LESSON,FRONT,BACK)
                         VALUES
-                        (@ID_USER,@NAME)";
+                        (@ID_LESSON,@FRONT,@BACK)";
 
-            var parameters = new { ID_USER = classEntity.IdUser, NAME = classEntity.Name };
+            var parameters = new { ID_LESSON = flashcard.IdLesson, FRONT = flashcard.Front, BACK = flashcard.Back };
 
             return _unitOfWork.Connection.ExecuteAsync(sql, parameters, _unitOfWork.Transaction);
         }
+
     }
 }

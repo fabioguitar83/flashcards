@@ -1,34 +1,59 @@
 ﻿using Flashcards.Domain.Interfaces;
+using MySqlConnector;
+using System.Data.Common;
 
 namespace Flashcards.Infrastructure.Database
 {
-    public sealed class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
-        private readonly DBSession _session;
-
-        public UnitOfWork(DBSession session)
+        private readonly MySqlConnection _connection;
+        private MySqlTransaction _transaction;
+        public UnitOfWork(MySqlConnection connection)
         {
-            _session = session;
+            _connection = connection;
+        }
+        public MySqlConnection Connection => _connection;
+
+        public MySqlTransaction Transaction => _transaction;
+
+        public void Begin()
+        {
+            _transaction = _connection.BeginTransaction();
         }
 
-        public void BeginTransaction()
+        public async Task BeginAsync()
         {
-            _session.Transaction = _session.Connection.BeginTransaction();
+            _transaction = await _connection.BeginTransactionAsync();
         }
 
         public void Commit()
         {
-            _session.Transaction.Commit();
-            Dispose();
+            _transaction.Commit();
+        }
+
+        public async Task CommitAsync()
+        {
+            await _transaction.CommitAsync();
+        }
+
+        public void Dispose()
+        {
+            if (_transaction != null)
+                _transaction.Dispose();
+
+            _transaction = null;
         }
 
         public void Rollback()
         {
-            _session.Transaction.Rollback();
-            Dispose();
+            _transaction.Rollback();
         }
 
-        public void Dispose() => _session.Transaction?.Dispose();
+        public async Task RollbackAsync()
+        {
+            await _transaction.RollbackAsync();
+        }
+
     }
 
 }

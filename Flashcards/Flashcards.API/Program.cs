@@ -1,4 +1,8 @@
+using Flashcards.Application.Handlers;
+using Flashcards.Domain.Commands;
 using Flashcards.Infrastructure.IOC;
+using Flashcards.Infrastructure.Mapper;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +13,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDependenciesProject();
+//MAPPER
+builder.Services.AddAutoMapper(typeof(MapperProfile));
+
+//MEDIATOR
+builder.Services.AddMediatR(typeof(UserAddCommandHandler));
+
+builder.Services.AddDependenciesProject(builder.Configuration);
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

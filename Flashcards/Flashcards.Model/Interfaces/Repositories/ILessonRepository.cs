@@ -4,6 +4,7 @@ namespace Flashcards.Domain.Interfaces.Repositories
 {
     public interface ILessonRepository
     {
-        Task<IEnumerable<LessonEntity>> List(int idUser);
+        Task Add(LessonEntity lesson);
+        Task<IEnumerable<LessonEntity>> List(int idUser, int idClass);
     }
 }
