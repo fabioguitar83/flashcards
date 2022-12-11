@@ -11,6 +11,7 @@ namespace Flashcards.Infrastructure.Mapper
         {
             CreateMap<UserAddCommand, UserEntity>().ForMember(dest => dest.Email, opt => opt.AddTransform(opt => opt.ToLower().Trim()));
             CreateMap<UserEntity, UserGetResponse>();
+            CreateMap<ClassAddCommand, ClassEntity>();
         }
     }
 }

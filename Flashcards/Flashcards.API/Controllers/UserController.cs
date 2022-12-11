@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Flashcards.Domain.Commands;
-using Flashcards.Domain.Entities;
 using Flashcards.Domain.Responses;
 using Flashcards.Infrastructure.Configuration;
 using Flashcards.Infrastructure.Services;

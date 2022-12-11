@@ -28,7 +28,7 @@ namespace Flashcards.Application.Handlers
 
             if (!BCript.Verify(request.Password, user.Password, user.Salt))
             {
-                await _mediator.Publish(new UnauthorizedErrorNotification("Usuario ou senha incorreto"));
+                await _mediator.Publish(new UnauthorizedErrorNotification("Usuário ou senha incorreto"));
             }
 
             return user;
