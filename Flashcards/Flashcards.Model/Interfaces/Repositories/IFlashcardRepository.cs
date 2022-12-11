@@ -4,6 +4,8 @@ namespace Flashcards.Domain.Interfaces.Repositories
 {
     public interface IFlashcardRepository
     {
-        Task Add(FlashcardEntity flashcard);
+        void AddUnitOfWork(IUnitOfWork unitOfWork);
+        Task AddAsync(FlashcardEntity flashcard);
+        Task<IEnumerable<FlashcardEntity>> ListAsync(int idLesson);
     }
 }

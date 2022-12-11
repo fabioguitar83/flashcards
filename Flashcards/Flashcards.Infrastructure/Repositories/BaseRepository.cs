@@ -1,16 +1,17 @@
-﻿using Flashcards.Domain.Interfaces.Repositories;
-using Flashcards.Infrastructure.Database;
-using MySqlConnector;
+﻿using Flashcards.Domain.Interfaces;
 
 namespace Flashcards.Infrastructure.Repositories
 {
-    public abstract class BaseRepository
+    public abstract class BaseRepository 
     {
-        protected MySqlConnection _connection { get; }
-
-        public BaseRepository(MySqlConnection connection)
+        protected IUnitOfWork _unitOfWork;
+        public BaseRepository(IUnitOfWork unitOfWork)
         {
-            _connection = connection;
+            _unitOfWork = unitOfWork;
+        }
+        public void AddUnitOfWork(IUnitOfWork unitOfWork) 
+        {
+            _unitOfWork = unitOfWork;
         }
     }
 }

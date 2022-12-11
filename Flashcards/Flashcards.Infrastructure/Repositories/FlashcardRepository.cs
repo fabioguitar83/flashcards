@@ -5,16 +5,13 @@ using Flashcards.Domain.Interfaces.Repositories;
 
 namespace Flashcards.Infrastructure.Repositories
 {
-    public class FlashcardRepository : IFlashcardRepository
+    public class FlashcardRepository : BaseRepository, IFlashcardRepository
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public FlashcardRepository(IUnitOfWork unitOfWork)
+        public FlashcardRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public Task Add(FlashcardEntity flashcard)
+        public async Task AddAsync(FlashcardEntity flashcard)
         {
             var sql = @"INSERT INTO FLASHCARD
                         (ID_LESSON,FRONT,BACK)
@@ -23,7 +20,17 @@ namespace Flashcards.Infrastructure.Repositories
 
             var parameters = new { ID_LESSON = flashcard.IdLesson, FRONT = flashcard.Front, BACK = flashcard.Back };
 
-            return _unitOfWork.Connection.ExecuteAsync(sql, parameters, _unitOfWork.Transaction);
+            flashcard.Id = await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
+        }
+        public async Task<IEnumerable<FlashcardEntity>> ListAsync(int idLesson)
+        {
+            var sql = @"SELECT ID,ID_LESSON,FRONT,BACK
+                        FROM  FLASHCARD
+                        WHERE ID_LESSON=@ID_LESSON";
+
+            var parameters = new { ID_LESSON = idLesson };
+
+            return await _unitOfWork.Connection.QueryAsync<FlashcardEntity>(sql, parameters, _unitOfWork.Transaction);
         }
 
     }

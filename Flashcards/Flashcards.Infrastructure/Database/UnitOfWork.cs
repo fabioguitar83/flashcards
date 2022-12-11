@@ -1,6 +1,5 @@
 ﻿using Flashcards.Domain.Interfaces;
 using MySqlConnector;
-using System.Data.Common;
 
 namespace Flashcards.Infrastructure.Database
 {
@@ -12,17 +11,43 @@ namespace Flashcards.Infrastructure.Database
         {
             _connection = connection;
         }
-        public MySqlConnection Connection => _connection;
+        public MySqlConnection Connection 
+        {
+
+            get 
+            {
+                OpenConnection();
+                return _connection; 
+            }
+        }
+
+        private void OpenConnection()
+        {
+            if (_connection.State != System.Data.ConnectionState.Open)
+            {
+                _connection.Open();
+            }
+        }
+
+        private void CloseConnection()
+        {
+            if (_connection.State != System.Data.ConnectionState.Closed)
+            {
+                _connection.Close();
+            }
+        }
 
         public MySqlTransaction Transaction => _transaction;
 
         public void Begin()
         {
+            OpenConnection();
             _transaction = _connection.BeginTransaction();
         }
 
         public async Task BeginAsync()
         {
+            OpenConnection();
             _transaction = await _connection.BeginTransactionAsync();
         }
 
@@ -40,6 +65,9 @@ namespace Flashcards.Infrastructure.Database
         {
             if (_transaction != null)
                 _transaction.Dispose();
+
+            CloseConnection();
+            _connection.Dispose();
         }
 
         public void Rollback()

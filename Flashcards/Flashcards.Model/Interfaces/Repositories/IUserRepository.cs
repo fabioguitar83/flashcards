@@ -4,6 +4,8 @@ namespace Flashcards.Domain.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-        Task Add(UserEntity user);
+        void AddUnitOfWork(IUnitOfWork unitOfWork);
+        Task AddAsync(UserEntity user);
+        Task<UserEntity> GetAsync(string email);
     }
 }

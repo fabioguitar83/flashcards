@@ -3,33 +3,44 @@ using Flashcards.Domain.Commands;
 using Flashcards.Domain.Entities;
 using Flashcards.Domain.Interfaces;
 using Flashcards.Domain.Interfaces.Repositories;
+using Flashcards.Domain.Notifications;
 using MediatR;
 
 namespace Flashcards.Application.Handlers
 {
-    public class UserAddCommandHandler : IRequestHandler<UserAddCommand,string>
+    public class UserAddCommandHandler : IRequestHandler<UserAddCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public UserAddCommandHandler(IUserRepository userRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IMediator _mediator;
+
+        public UserAddCommandHandler(IUserRepository userRepository, IMapper mapper, IUnitOfWork unitOfWork, IMediator mediator)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
-        public Task<string> Handle(UserAddCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UserAddCommand request, CancellationToken cancellationToken)
         {
-            //_unitOfWork.Begin();
+            if (!request.IsValid())
+            {
+                await _mediator.Publish(new ValidationErrorNotification(request.ValidationResult));
+            }
 
+            _unitOfWork.Begin();
+
+            _userRepository.AddUnitOfWork(_unitOfWork);
+            
             var userEntity = _mapper.Map<UserEntity>(request);
-            _userRepository.Add(userEntity);
+            await _userRepository.AddAsync(userEntity);
 
-            //_unitOfWork.Commit();
+            _unitOfWork.Commit();
 
-
-            return null;
+            return Unit.Value;
         }
+
     }
 }

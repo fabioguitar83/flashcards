@@ -4,6 +4,8 @@ namespace Flashcards.Domain.Interfaces.Repositories
 {
     public interface IClassRepository
     {
-        Task Add(ClassEntity classEntity);
+        void AddUnitOfWork(IUnitOfWork unitOfWork);
+        Task AddAsync(ClassEntity classEntity);
+        Task<IEnumerable<ClassEntity>> ListAsync(int idUser);
     }
 }
