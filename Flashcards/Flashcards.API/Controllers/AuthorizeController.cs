@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Flashcards.Domain.Commands;
-using Flashcards.Domain.Responses;
 using Flashcards.Infrastructure.Configuration;
-using Flashcards.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,22 +8,22 @@ namespace Flashcards.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthorizeController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public UserController(IMediator mediator, IMapper mapper)
+        public AuthorizeController(IMediator mediator, AppSettings appSettings, IMapper mapper)
         {
             _mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(UserAddCommand userAddCommand)
+        [Route("Login")]
+        public async Task<IActionResult> LoginAsync([FromBody] AuthorizeCommand userGetCommand)
         {
-            await _mediator.Send(userAddCommand);
+            var response = await _mediator.Send(userGetCommand);
 
-            return NoContent();
+            return Ok(response);
         }
-
     }
 }

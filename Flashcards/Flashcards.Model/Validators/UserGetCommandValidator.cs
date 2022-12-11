@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Flashcards.Domain.Validators
 {
-    public class UserGetCommandValidator : AbstractValidator<UserGetCommand>
+    public class UserGetCommandValidator : AbstractValidator<AuthorizeCommand>
     {
         public UserGetCommandValidator()
         {

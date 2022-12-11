@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Flashcards.Domain.Commands
 {
-    public class UserGetCommand : CommandBase, IRequest<UserEntity>
+    public class AuthorizeCommand : CommandBase, IRequest<string>
     {
         public string Email { get; set; }
         public string Password { get; set; }

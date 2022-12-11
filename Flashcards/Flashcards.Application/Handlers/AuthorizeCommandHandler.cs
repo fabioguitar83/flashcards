@@ -1,23 +1,26 @@
 ﻿using Flashcards.Domain.Commands;
-using Flashcards.Domain.Entities;
 using Flashcards.Domain.Interfaces.Repositories;
 using Flashcards.Domain.Notifications;
 using Flashcards.Infrastructure.BCript;
+using Flashcards.Infrastructure.Configuration;
+using Flashcards.Infrastructure.Services;
 using MediatR;
 
 namespace Flashcards.Application.Handlers
 {
-    public class UserGetCommandHandler : IRequestHandler<UserGetCommand, UserEntity>
+    public class AuthorizeCommandHandler : IRequestHandler<AuthorizeCommand, string>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMediator _mediator;
-        
-        public UserGetCommandHandler(IUserRepository userRepository, IMediator mediator)
+        private readonly AppSettings _appSettings;
+
+        public AuthorizeCommandHandler(IUserRepository userRepository, IMediator mediator, AppSettings appSettings)
         {
             _userRepository = userRepository;
             _mediator = mediator;
+            _appSettings = appSettings;
         }
-        public async Task<UserEntity> Handle(UserGetCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AuthorizeCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
             {
@@ -31,7 +34,7 @@ namespace Flashcards.Application.Handlers
                 await _mediator.Publish(new UnauthorizedErrorNotification("Usuário ou senha incorreto"));
             }
 
-            return user;
+            return TokenService.GenerateToken(user, _appSettings);
         }
     }
 }
