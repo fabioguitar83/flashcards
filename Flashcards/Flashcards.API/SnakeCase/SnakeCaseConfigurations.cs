@@ -2,20 +2,11 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Globalization;
-using System.Text.Json;
 
 namespace Flashcards.API.SnakeCase
 {
 
-    //CONTRATOS COM SNAKE CASE
-    public class SnakeCasePropertyNamingPolicy : JsonNamingPolicy
-    {
-        public override string ConvertName(string name)
-        {
-            return name.ToSnakeCase();
-        }
-    }
-
+    //CONTRATOS COM SNAKE CASE FILTER
     public static class StringExtensions
     {
         public static string ToSnakeCase(this string str)
@@ -42,9 +33,9 @@ namespace Flashcards.API.SnakeCase
             }
         }
     }
-  
-    //QUERYS COM SNAKE CASE
-    
+
+    //QUERYS COM SNAKE CASE PROVIDER
+
     public class SnakeCaseQueryValueProviderFactory : IValueProviderFactory
     {
         public Task CreateValueProviderAsync(ValueProviderFactoryContext context)

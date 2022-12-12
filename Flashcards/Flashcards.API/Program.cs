@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,12 +17,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(
     options =>
     {
+        //SNAKE CASE IN QUERY PARAMETERS, para não precisar ficar colocando [FromQuery(Name="teste_teste")]
         options.ValueProviderFactories.Add(new SnakeCaseQueryValueProviderFactory());
     }
-    ).AddJsonOptions(options =>
+    ).AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCasePropertyNamingPolicy();
+        options.SerializerSettings.ContractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new SnakeCaseNamingStrategy()
+        };
+        options.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
+        options.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Include;
     });
+   
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +37,7 @@ builder.Services.AddEndpointsApiExplorer();
 //SWAGGER
 builder.Services.AddSwaggerGen(c =>
 {
+    //SNAKE CASE IN QUERY PARAMETERS
     c.OperationFilter<SnakecasingParameOperationFilter>();
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Flashcards API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -57,6 +66,9 @@ builder.Services.AddSwaggerGen(c =>
                     }
                 });
 });
+
+//FOR USE SNAKECASE
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 //APPSETTING
 builder.Services.Configure<AppSettings>(builder.Configuration);
