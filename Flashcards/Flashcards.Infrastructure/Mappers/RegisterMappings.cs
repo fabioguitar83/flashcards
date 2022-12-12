@@ -10,6 +10,7 @@ namespace Flashcards.Infrastructure.Mappers
             FluentMapper.Initialize(config =>
             {
                 config.AddMap(new ClassEntityMap());
+                config.AddMap(new LessonEntityMap());
                 config.ForDommel();
             });
         }

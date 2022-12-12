@@ -29,7 +29,6 @@ builder.Services.AddEndpointsApiExplorer();
 //SWAGGER
 builder.Services.AddSwaggerGen(c =>
 {
-    //c.SchemaFilter<SnakeCaseSchemaFilter>();
     c.OperationFilter<SnakecasingParameOperationFilter>();
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Flashcards API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()

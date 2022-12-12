@@ -13,6 +13,8 @@ namespace Flashcards.Infrastructure.Mappers
             CreateMap<UserEntity, UserGetResponse>();
             CreateMap<ClassAddCommand, ClassEntity>();
             CreateMap<ClassUpdateCommand, ClassEntity>();
+            CreateMap<LessonAddCommand, LessonEntity>();            
+            CreateMap<LessonEntity, LessonListResponse>();
         }
     }
 }
