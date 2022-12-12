@@ -24,5 +24,31 @@ namespace Flashcards.API.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("list")]
+        [Authorize]
+        public async Task<IActionResult> List([FromQuery] ClassListCommand classListCommand)
+        {
+            var response = await _mediator.Send(classListCommand);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> List([FromQuery] ClassRemoveCommand classRemoveCommand)
+        {
+            await _mediator.Send(classRemoveCommand);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PostAsync([FromBody]ClassUpdateCommand userUpdateCommand)
+        {
+            await _mediator.Send(userUpdateCommand);
+
+            return NoContent();
+        }
     }
 }

@@ -3,7 +3,7 @@ using Flashcards.Domain.Commands;
 using Flashcards.Domain.Entities;
 using Flashcards.Domain.Responses;
 
-namespace Flashcards.Infrastructure.Mapper
+namespace Flashcards.Infrastructure.Mappers
 {
     public class MapperProfile : Profile
     {
@@ -12,6 +12,7 @@ namespace Flashcards.Infrastructure.Mapper
             CreateMap<UserAddCommand, UserEntity>().ForMember(dest => dest.Email, opt => opt.AddTransform(opt => opt.ToLower().Trim()));
             CreateMap<UserEntity, UserGetResponse>();
             CreateMap<ClassAddCommand, ClassEntity>();
+            CreateMap<ClassUpdateCommand, ClassEntity>();
         }
     }
 }

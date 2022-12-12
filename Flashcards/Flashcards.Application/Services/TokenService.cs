@@ -1,11 +1,11 @@
-﻿using Flashcards.Domain.Entities;
-using Flashcards.Infrastructure.Configuration;
+﻿using Flashcards.Domain.Configuration;
+using Flashcards.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Flashcards.Infrastructure.Services
+namespace Flashcards.Application.Services
 {
     public static class TokenService
     {
@@ -19,7 +19,7 @@ namespace Flashcards.Infrastructure.Services
                 {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
+                    new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddHours(24),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

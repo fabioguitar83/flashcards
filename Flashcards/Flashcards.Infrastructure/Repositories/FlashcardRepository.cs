@@ -22,6 +22,24 @@ namespace Flashcards.Infrastructure.Repositories
 
             flashcard.Id = await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
         }
+
+        public async Task DeleteByUserAsync(int idUser)
+        {
+
+            var sql = @"DELETE FROM FLASHCARD
+                        WHERE ID_LESSON IN
+                        (
+                            SELECT B.ID 
+                            FROM CLASS A 
+                                INNER JOIN LESSON B ON A.ID = B.ID_CLASS
+                            WHERE A.ID_USER = @ID_USER
+                        )";
+
+            var parameters = new { ID_USER = idUser };
+
+            await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
+        }
+
         public async Task<IEnumerable<FlashcardEntity>> ListAsync(int idLesson)
         {
             var sql = @"SELECT ID,ID_LESSON,FRONT,BACK

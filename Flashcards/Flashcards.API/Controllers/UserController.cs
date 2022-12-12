@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using Flashcards.Domain.Commands;
-using Flashcards.Domain.Responses;
-using Flashcards.Infrastructure.Configuration;
-using Flashcards.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +11,7 @@ namespace Flashcards.API.Controllers
     {
         private readonly IMediator _mediator;
 
-        public UserController(IMediator mediator, IMapper mapper)
+        public UserController(IMediator mediator)
         {
             _mediator = mediator;
         }

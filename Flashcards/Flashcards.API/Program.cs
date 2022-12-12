@@ -1,9 +1,9 @@
 using Flashcards.API.Middlewares;
-using Flashcards.API.Policies;
+using Flashcards.API.SnakeCase;
 using Flashcards.Application.Handlers;
-using Flashcards.Infrastructure.Configuration;
+using Flashcards.Domain.Configuration;
 using Flashcards.Infrastructure.IOC;
-using Flashcards.Infrastructure.Mapper;
+using Flashcards.Infrastructure.Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -13,12 +13,14 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers()
-    .AddJsonOptions(
+builder.Services.AddControllers(
     options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance;
+        options.ValueProviderFactories.Add(new SnakeCaseQueryValueProviderFactory());
+    }
+    ).AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCasePropertyNamingPolicy();
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -27,8 +29,9 @@ builder.Services.AddEndpointsApiExplorer();
 //SWAGGER
 builder.Services.AddSwaggerGen(c =>
 {
+    //c.SchemaFilter<SnakeCaseSchemaFilter>();
+    c.OperationFilter<SnakecasingParameOperationFilter>();
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Flashcards API", Version = "v1" });
-
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
@@ -89,6 +92,8 @@ builder.Services.AddAuthentication(x =>
         };
     }
 );
+
+RegisterMappings.Register();
 
 var app = builder.Build();
 

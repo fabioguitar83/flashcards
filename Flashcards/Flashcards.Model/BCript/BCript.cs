@@ -1,6 +1,6 @@
 ﻿using Flashcards.Domain.DTO;
 
-namespace Flashcards.Infrastructure.BCript
+namespace Flashcards.Domain.BCript
 {
     public static class BCript
     {

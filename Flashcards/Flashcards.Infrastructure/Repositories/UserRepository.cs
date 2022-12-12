@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Flashcards.Domain.BCript;
 using Flashcards.Domain.Entities;
 using Flashcards.Domain.Interfaces;
 using Flashcards.Domain.Interfaces.Repositories;
@@ -20,7 +21,7 @@ namespace Flashcards.Infrastructure.Repositories
                         (@EMAIL,@NAME,@PASSWORD,@SALT);
                         SELECT LAST_INSERT_ID();";
 
-            var passwordEncript = BCript.BCript.Encript(user.Password);
+            var passwordEncript = BCript.Encript(user.Password);
 
             var parameters = new { EMAIL = user.Email, NAME = user.Name, PASSWORD = passwordEncript.Password, SALT = passwordEncript.Salt };
 

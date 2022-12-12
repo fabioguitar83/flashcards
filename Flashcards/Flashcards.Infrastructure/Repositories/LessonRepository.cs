@@ -5,15 +5,10 @@ using Flashcards.Domain.Interfaces.Repositories;
 
 namespace Flashcards.Infrastructure.Repositories
 {
-    public class LessonRepository : ILessonRepository
+    public class LessonRepository : BaseRepository, ILessonRepository
     {
 
-        private readonly IUnitOfWork _unitOfWork;
-
-        public LessonRepository(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        public LessonRepository(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
         public async Task AddAsync(LessonEntity lesson)
         {
@@ -25,6 +20,17 @@ namespace Flashcards.Infrastructure.Repositories
             var parameters = new { ID_CLASS = lesson.IdClass, NAME = lesson.Name };
 
             lesson.Id = await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
+        }
+
+        public async Task DeleteByUserAsync(int idUser)
+        {
+
+            var sql = @"DELETE FROM LESSON
+                        WHERE ID_CLASS IN(SELECT A.ID FROM CLASS A WHERE A.ID_USER = @ID_USER)";
+
+            var parameters = new { ID_USER = idUser };
+
+            await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
         }
 
         public async Task<IEnumerable<LessonEntity>> ListAsync(int idClass)

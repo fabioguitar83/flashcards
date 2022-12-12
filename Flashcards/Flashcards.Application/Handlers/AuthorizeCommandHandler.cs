@@ -1,9 +1,9 @@
-﻿using Flashcards.Domain.Commands;
+﻿using Flashcards.Application.Services;
+using Flashcards.Domain.BCript;
+using Flashcards.Domain.Commands;
+using Flashcards.Domain.Configuration;
 using Flashcards.Domain.Interfaces.Repositories;
 using Flashcards.Domain.Notifications;
-using Flashcards.Infrastructure.BCript;
-using Flashcards.Infrastructure.Configuration;
-using Flashcards.Infrastructure.Services;
 using MediatR;
 
 namespace Flashcards.Application.Handlers

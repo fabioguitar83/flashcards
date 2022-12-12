@@ -7,5 +7,6 @@ namespace Flashcards.Domain.Interfaces.Repositories
         void AddUnitOfWork(IUnitOfWork unitOfWork);
         Task AddAsync(FlashcardEntity flashcard);
         Task<IEnumerable<FlashcardEntity>> ListAsync(int idLesson);
+        Task DeleteByUserAsync(int idUser);
     }
 }

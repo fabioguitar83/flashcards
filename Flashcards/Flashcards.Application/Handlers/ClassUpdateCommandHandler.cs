@@ -1,24 +1,21 @@
 ﻿using AutoMapper;
 using Flashcards.Application.Interfaces;
-using Flashcards.Application.Services;
 using Flashcards.Domain.Commands;
 using Flashcards.Domain.Entities;
 using Flashcards.Domain.Interfaces.Repositories;
 using Flashcards.Domain.Notifications;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 
 namespace Flashcards.Application.Handlers
 {
-    public class ClassAddCommandHandler : IRequestHandler<ClassAddCommand>
+    public class ClassUpdateCommandHandler : IRequestHandler<ClassUpdateCommand>
     {
         private readonly IClassRepository _classRepository;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly IUserContextService _userContextService;
 
-        public ClassAddCommandHandler(
+        public ClassUpdateCommandHandler(
             IClassRepository classRepository, 
             IMediator mediator, 
             IMapper mapper,
@@ -29,23 +26,30 @@ namespace Flashcards.Application.Handlers
             _mapper = mapper;
             _userContextService = userContextService;
         }
-        public async Task<Unit> Handle(ClassAddCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ClassUpdateCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
             {
                 await _mediator.Publish(new ValidationErrorNotification(request.ValidationResult));
             }
 
-            var user = _userContextService.GetUserContext();
+            var classDb = await _classRepository.GetAsync(request.Id);
 
-            if (user.Id != request.IdUser) 
+            if (classDb == null)
             {
-                await _mediator.Publish(new ValidationErrorNotification("Usuário inválido para criação de aula"));
+                await _mediator.Publish(new ValidationErrorNotification("Aula não encontrada"));
             }
 
-            var classEntity = _mapper.Map<ClassEntity>(request);
-           
-            await _classRepository.AddAsync(classEntity);
+            var user = _userContextService.GetUserContext();
+
+            if (user.Id != classDb.IdUser) 
+            {
+                await _mediator.Publish(new ValidationErrorNotification("Usuário inválido para atualização de aula"));
+            }
+
+            var classUpdate = _mapper.Map<ClassEntity>(request);
+
+            await _classRepository.UpdateAsync(classUpdate);
 
             return Unit.Value;
         }
