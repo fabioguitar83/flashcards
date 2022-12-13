@@ -8,5 +8,6 @@ namespace Flashcards.Domain.Interfaces.Repositories
         Task AddAsync(UserEntity user);
         Task<UserEntity> GetAsync(string email);
         Task<UserEntity> GetByLessonAsync(int idLesson);
+        Task<UserEntity> GetByFlashcardAsync(int idFlashcard);
     }
 }

@@ -18,7 +18,8 @@ namespace Flashcards.Infrastructure.Repositories
             var sql = @"INSERT INTO CLASS
                         (ID_USER,NAME)
                         VALUES
-                        (@ID_USER,@NAME)";
+                        (@ID_USER,@NAME);
+                        SELECT LAST_INSERT_ID();";
 
             var parameters = new { ID_USER = classEntity.IdUser, NAME = classEntity.Name };
 

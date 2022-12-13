@@ -15,7 +15,8 @@ namespace Flashcards.Infrastructure.Repositories
             var sql = @"INSERT INTO LESSON
                         (ID_CLASS,NAME)
                         VALUES
-                        (@ID_CLASS,@NAME)";
+                        (@ID_CLASS,@NAME);
+                        SELECT LAST_INSERT_ID();";
 
             var parameters = new { ID_CLASS = lesson.IdClass, NAME = lesson.Name };
 

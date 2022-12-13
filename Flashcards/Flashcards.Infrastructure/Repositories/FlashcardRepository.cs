@@ -16,7 +16,8 @@ namespace Flashcards.Infrastructure.Repositories
             var sql = @"INSERT INTO FLASHCARD
                         (ID_LESSON,FRONT,BACK)
                         VALUES
-                        (@ID_LESSON,@FRONT,@BACK)";
+                        (@ID_LESSON,@FRONT,@BACK);
+                        SELECT LAST_INSERT_ID();";
 
             var parameters = new { ID_LESSON = flashcard.IdLesson, FRONT = flashcard.Front, BACK = flashcard.Back };
 
@@ -51,5 +52,15 @@ namespace Flashcards.Infrastructure.Repositories
             return await _unitOfWork.Connection.QueryAsync<FlashcardEntity>(sql, parameters, _unitOfWork.Transaction);
         }
 
+        public async Task UpdateAsync(FlashcardEntity flashcard)
+        {
+            var sql = @"UPDATE FLASHCARD
+                        SET FRONT = @FRONT, BACK = @BACK
+                        WHERE ID = @ID";
+
+            var parameters = new { FRONT = flashcard.Front, BACK = flashcard.Back, ID = flashcard.Id };
+
+            await _unitOfWork.Connection.ExecuteAsync(sql, parameters, _unitOfWork.Transaction);
+        }
     }
 }

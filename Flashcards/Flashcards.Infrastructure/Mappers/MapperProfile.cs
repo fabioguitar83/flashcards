@@ -17,6 +17,8 @@ namespace Flashcards.Infrastructure.Mappers
             CreateMap<LessonEntity, LessonListResponse>();
             CreateMap<FlashcardAddCommand, FlashcardEntity>();
             CreateMap<LessonUpdateCommand, LessonEntity>();
+            CreateMap<FlashcardUpdateCommand, FlashcardEntity>();
+            CreateMap<FlashcardEntity, FlashcardListResponse>();
         }
     }
 }

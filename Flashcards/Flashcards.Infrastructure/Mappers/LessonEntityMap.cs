@@ -7,7 +7,7 @@ namespace Flashcards.Infrastructure.Mappers
     {
         public LessonEntityMap()
         {
-            ToTable("class");
+            ToTable("lesson");
             Map(x => x.Id).ToColumn("id", false).IsKey();
             Map(x => x.IdClass).ToColumn("id_class", false);
             Map(x => x.Name).ToColumn("name", false);

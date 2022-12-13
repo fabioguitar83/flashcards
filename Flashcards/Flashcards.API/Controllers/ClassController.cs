@@ -18,7 +18,7 @@ namespace Flashcards.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post(ClassAddCommand classAddCommand)
+        public async Task<IActionResult> PostAsync(ClassAddCommand classAddCommand)
         {
             await _mediator.Send(classAddCommand);
 
@@ -27,7 +27,7 @@ namespace Flashcards.API.Controllers
 
         [HttpGet("list")]
         [Authorize]
-        public async Task<IActionResult> List([FromQuery] ClassListCommand classListCommand)
+        public async Task<IActionResult> ListAsync([FromQuery] ClassListCommand classListCommand)
         {
             var response = await _mediator.Send(classListCommand);
 
@@ -36,7 +36,7 @@ namespace Flashcards.API.Controllers
 
         [HttpDelete]
         [Authorize]
-        public async Task<IActionResult> List([FromQuery] ClassRemoveCommand classRemoveCommand)
+        public async Task<IActionResult> ListAsync([FromQuery] ClassRemoveCommand classRemoveCommand)
         {
             await _mediator.Send(classRemoveCommand);
 
@@ -44,7 +44,7 @@ namespace Flashcards.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PostAsync([FromBody]ClassUpdateCommand userUpdateCommand)
+        public async Task<IActionResult> PutAsync([FromBody]ClassUpdateCommand userUpdateCommand)
         {
             await _mediator.Send(userUpdateCommand);
 

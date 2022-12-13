@@ -39,9 +39,23 @@ namespace Flashcards.Infrastructure.Repositories
             return await _unitOfWork.Connection.QueryFirstAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
         }
 
+        public async Task<UserEntity> GetByFlashcardAsync(int idFlashcard)
+        {
+            var sql = @"SELECT D.ID,D.EMAIL,D.NAME,D.PASSWORD,D.SALT
+                            FROM FLASHCARD A
+                            INNER JOIN LESSON B ON A.ID_LESSON = B.ID
+                            INNER JOIN CLASS C ON B.ID_CLASS = C.ID
+                            INNER JOIN USER D ON C.ID_USER = D.ID                            
+                        WHERE A.ID=@ID";
+
+            var parameters = new { ID = idFlashcard };
+
+            return await _unitOfWork.Connection.QueryFirstAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
+        }
+
         public async Task<UserEntity> GetByLessonAsync(int idLesson)
         {
-            var sql = @"SELECT C.ID,C.EMAIL,C.NAME,C.PASSWORD,SALT
+            var sql = @"SELECT C.ID,C.EMAIL,C.NAME,C.PASSWORD,C.SALT
                             FROM LESSON A
                             INNER JOIN CLASS B ON A.ID_CLASS = B.ID
                             INNER JOIN USER C ON B.ID_USER = C.ID

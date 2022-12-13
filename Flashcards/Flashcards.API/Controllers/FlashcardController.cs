@@ -7,18 +7,18 @@ namespace Flashcards.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LessonController : ControllerBase
+    public class Flashcard : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public LessonController(IMediator mediator)
+        public Flashcard(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostAsync(LessonAddCommand lessonAddCommand)
+        public async Task<IActionResult> PostAsync(FlashcardAddCommand lessonAddCommand)
         {
             await _mediator.Send(lessonAddCommand);
 
@@ -27,7 +27,7 @@ namespace Flashcards.API.Controllers
 
         [HttpGet("list")]
         [Authorize]
-        public async Task<IActionResult> ListAsync([FromQuery] LessonListCommand lessonAddCommand)
+        public async Task<IActionResult> ListAsync([FromQuery] FlashcardListCommand lessonAddCommand)
         {
             var response = await _mediator.Send(lessonAddCommand);
 
@@ -35,9 +35,9 @@ namespace Flashcards.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutAsync([FromBody]LessonUpdateCommand lessonUpdateCommand)
+        public async Task<IActionResult> PutAsync([FromBody] FlashcardUpdateCommand flashcardUpdateCommand)
         {
-            await _mediator.Send(lessonUpdateCommand);
+            await _mediator.Send(flashcardUpdateCommand);
 
             return NoContent();
         }
@@ -51,6 +51,12 @@ namespace Flashcards.API.Controllers
         //    return Ok();
         //}
 
+        //[HttpPut]
+        //public async Task<IActionResult> PostAsync([FromBody]ClassUpdateCommand userUpdateCommand)
+        //{
+        //    await _mediator.Send(userUpdateCommand);
 
+        //    return NoContent();
+        //}
     }
 }
