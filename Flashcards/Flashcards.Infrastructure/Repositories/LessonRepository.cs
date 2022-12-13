@@ -22,6 +22,17 @@ namespace Flashcards.Infrastructure.Repositories
             lesson.Id = await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
         }
 
+        public async Task UpdateAsync(LessonEntity classEntity)
+        {
+            var sql = @"UPDATE LESSON
+                        SET NAME = @NAME
+                        WHERE ID = @ID";
+
+            var parameters = new { ID = classEntity.Id, NAME = classEntity.Name };
+
+            classEntity.Id = await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
+        }
+
         public async Task DeleteByUserAsync(int idUser)
         {
 
@@ -42,7 +53,17 @@ namespace Flashcards.Infrastructure.Repositories
             var parameters = new { ID_CLASS = idClass };
 
             return await _unitOfWork.Connection.QueryAsync<LessonEntity>(sql, parameters, _unitOfWork.Transaction);
+        }
 
+        public async Task<LessonEntity> GetAsync(int id)
+        {
+            var sql = @"SELECT A.ID, A.ID_CLASS, A.NAME
+                        FROM LESSON A
+                        WHERE A.ID = @ID";
+
+            var parameters = new { ID = id };
+
+            return await _unitOfWork.Connection.QueryFirstAsync<LessonEntity>(sql, parameters, _unitOfWork.Transaction);
         }
     }
 }

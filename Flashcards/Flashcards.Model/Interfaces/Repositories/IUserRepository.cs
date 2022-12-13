@@ -7,5 +7,6 @@ namespace Flashcards.Domain.Interfaces.Repositories
         void AddUnitOfWork(IUnitOfWork unitOfWork);
         Task AddAsync(UserEntity user);
         Task<UserEntity> GetAsync(string email);
+        Task<UserEntity> GetByLessonAsync(int idLesson);
     }
 }
