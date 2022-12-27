@@ -29,7 +29,7 @@ namespace Flashcards.Application.Handlers
 
             var user = await _userRepository.GetAsync(request.Email.ToLower().Trim());
 
-            if (!BCript.Verify(request.Password, user.Password, user.Salt))
+            if (user == null || !BCript.Verify(request.Password, user.Password, user.Salt))
             {
                 await _mediator.Publish(new UnauthorizedErrorNotification("Usuário ou senha incorreto"));
             }

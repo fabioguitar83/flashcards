@@ -1,4 +1,5 @@
 ﻿using Flashcards.Domain.Entities;
+using Flashcards.Domain.Responses;
 
 namespace Flashcards.Domain.Interfaces.Repositories
 {
@@ -8,7 +9,8 @@ namespace Flashcards.Domain.Interfaces.Repositories
         Task AddAsync(LessonEntity lesson);
         Task UpdateAsync(LessonEntity classEntity);
         Task<IEnumerable<LessonEntity>> ListAsync(int idClass);
-        Task DeleteByUserAsync(int idUser);
+        Task<IEnumerable<LessonResponse>> ListWithQtdFlashcardAsync(int idClass);
+        Task DeleteByUserAsync(int idClass);
         Task<LessonEntity> GetAsync(int id);
 
     }

@@ -24,7 +24,7 @@ namespace Flashcards.Application.Services
 
                 var name = claims.FirstOrDefault(p => p.Type == ClaimTypes.Name).Value;
                 var email = claims.FirstOrDefault(p => p.Type == ClaimTypes.Email).Value;
-                var id = claims.FirstOrDefault(p => p.Type == ClaimTypes.Sid).Value;
+                var id = claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier).Value;
 
                 userContextModel = new UserContextModel(Convert.ToInt32(id), name, email);
             }

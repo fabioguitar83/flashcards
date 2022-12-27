@@ -17,7 +17,7 @@ namespace Flashcards.Domain.Validators
 
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório")
-                .Length(6, 50).WithMessage("Campo {PropertyName} deve ter entre 6 e 10 caracteres")
+                .Length(6, 50).WithMessage("Campo {PropertyName} deve ter entre 6 e 50 caracteres")
                 .Must(ValidatePasswordNumber).WithMessage("Campo {PropertyName} deve ter conter pelo menos um número")
                 .Must(ValidatePasswordUpperChar).WithMessage("Campo {PropertyName} deve ter conter pelo menos uma letra maiuscula")
                 .Must(ValidatePasswordLowerChar).WithMessage("Campo {PropertyName} deve ter conter pelo menos uma letra minúscula");

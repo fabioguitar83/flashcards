@@ -8,6 +8,6 @@ namespace Flashcards.Domain.Interfaces.Repositories
         Task AddAsync(FlashcardEntity flashcard);
         Task UpdateAsync(FlashcardEntity flashcard);
         Task<IEnumerable<FlashcardEntity>> ListAsync(int idLesson);
-        Task DeleteByUserAsync(int idUser);
+        Task DeleteByUserAsync(int IdClass);
     }
 }

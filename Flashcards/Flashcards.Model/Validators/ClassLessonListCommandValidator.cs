@@ -3,13 +3,13 @@ using FluentValidation;
 
 namespace Flashcards.Domain.Validators
 {
-    public class ClassRemoveCommandValidator : AbstractValidator<ClassRemoveCommand>
+    public class ClassLessonListCommandValidator : AbstractValidator<ClassLessonListCommand> 
     {
-        public ClassRemoveCommandValidator()
+        public ClassLessonListCommandValidator()
         {
-            RuleFor(x => x.IdClass)
+            RuleFor(x => x.IdUser)
                 .NotNull().WithMessage("O campo {PropertyName} é obrigatório");
+
         }
- 
     }
 }

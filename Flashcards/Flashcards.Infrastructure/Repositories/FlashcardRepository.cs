@@ -24,7 +24,7 @@ namespace Flashcards.Infrastructure.Repositories
             flashcard.Id = await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
         }
 
-        public async Task DeleteByUserAsync(int idUser)
+        public async Task DeleteByUserAsync(int idClass)
         {
 
             var sql = @"DELETE FROM FLASHCARD
@@ -33,10 +33,10 @@ namespace Flashcards.Infrastructure.Repositories
                             SELECT B.ID 
                             FROM CLASS A 
                                 INNER JOIN LESSON B ON A.ID = B.ID_CLASS
-                            WHERE A.ID_USER = @ID_USER
+                            WHERE A.ID = @ID_CLASS
                         )";
 
-            var parameters = new { ID_USER = idUser };
+            var parameters = new { ID_CLASS = idClass };
 
             await _unitOfWork.Connection.ExecuteScalarAsync<int>(sql, parameters, _unitOfWork.Transaction);
         }

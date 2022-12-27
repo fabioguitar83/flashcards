@@ -12,6 +12,8 @@ namespace Flashcards.Infrastructure.Mappers
                 config.AddMap(new ClassEntityMap());
                 config.AddMap(new LessonEntityMap());
                 config.AddMap(new FlashcardEntityMap());
+                config.AddMap(new LessonResponseMap());
+                
                 config.ForDommel();
             });
         }

@@ -9,7 +9,7 @@ namespace Flashcards.Domain.Interfaces.Repositories
         Task AddAsync(ClassEntity classEntity);
         Task UpdateAsync(ClassEntity classEntity);
         Task<IEnumerable<ClassListResponse>> ListWithQtdLessonsAsync(int idUser);
-        Task DeleteByUserAsync(int idUser);
+        Task DeleteByUserAsync(int id);
         Task<ClassEntity> GetAsync(int id);
     }
 }

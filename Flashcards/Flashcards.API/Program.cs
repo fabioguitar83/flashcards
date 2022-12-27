@@ -99,10 +99,26 @@ builder.Services.AddAuthentication(x =>
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
         };
     }
 );
+
+var policyCorsName= "Alow";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: policyCorsName,
+                      policy =>
+                      {
+                          policy.AllowAnyMethod();
+                          policy.AllowAnyHeader();
+                          policy.AllowAnyOrigin();
+                      });
+});
+
 
 RegisterMappings.Register();
 
@@ -121,8 +137,11 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware(typeof(ErrorMiddleware));
 
+app.UseCors(policyCorsName);
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

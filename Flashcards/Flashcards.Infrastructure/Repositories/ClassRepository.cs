@@ -50,12 +50,12 @@ namespace Flashcards.Infrastructure.Repositories
             return await _unitOfWork.Connection.QueryAsync<ClassListResponse>(sql, parameters, _unitOfWork.Transaction);
         }
 
-        public async Task DeleteByUserAsync(int idUser)
+        public async Task DeleteByUserAsync(int id)
         {
             var sql = @"DELETE FROM CLASS
-                        WHERE ID_USER = @ID_USER";
+                        WHERE ID = @ID_USER";
 
-            var parameters = new { ID_USER = idUser };
+            var parameters = new { ID_USER = id };
 
             await _unitOfWork.Connection.ExecuteAsync(sql, parameters, _unitOfWork.Transaction);
         }
@@ -68,7 +68,7 @@ namespace Flashcards.Infrastructure.Repositories
 
             var parameters = new { ID = id };
 
-            return await _unitOfWork.Connection.QueryFirstAsync<ClassEntity>(sql, parameters, _unitOfWork.Transaction);
+            return await _unitOfWork.Connection.QueryFirstOrDefaultAsync<ClassEntity>(sql, parameters, _unitOfWork.Transaction);
         }
 
     }

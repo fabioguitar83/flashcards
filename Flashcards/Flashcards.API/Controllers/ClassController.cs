@@ -34,6 +34,15 @@ namespace Flashcards.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("list-class-lesson")]
+        [Authorize]
+        public async Task<IActionResult> ListWithLessonAsync([FromQuery] ClassLessonListCommand classLessonListCommand)
+        {
+            var response = await _mediator.Send(classLessonListCommand);
+
+            return Ok(response);
+        }
+
         [HttpDelete]
         [Authorize]
         public async Task<IActionResult> ListAsync([FromQuery] ClassRemoveCommand classRemoveCommand)
@@ -44,7 +53,8 @@ namespace Flashcards.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutAsync([FromBody]ClassUpdateCommand userUpdateCommand)
+        [Authorize]
+        public async Task<IActionResult> PutAsync([FromBody] ClassUpdateCommand userUpdateCommand)
         {
             await _mediator.Send(userUpdateCommand);
 

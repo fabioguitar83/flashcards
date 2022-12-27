@@ -41,7 +41,9 @@ namespace Flashcards.Application.Handlers
 
             var user = _userContextService.GetUserContext();
 
-            if (user.Id != request.IdUser)
+            var aula = await _classRepository.GetAsync(request.IdClass);
+
+            if (user.Id != aula.IdUser)
             {
                 await _mediator.Publish(new ValidationErrorNotification("Usuário inválido para exclusão de aula"));
             }
@@ -54,9 +56,9 @@ namespace Flashcards.Application.Handlers
 
             try
             {
-                await _flashcardRepository.DeleteByUserAsync(request.IdUser);
-                await _lessonRepository.DeleteByUserAsync(request.IdUser);
-                await _classRepository.DeleteByUserAsync(request.IdUser);
+                await _flashcardRepository.DeleteByUserAsync(request.IdClass);
+                await _lessonRepository.DeleteByUserAsync(request.IdClass);
+                await _classRepository.DeleteByUserAsync(request.IdClass);
 
                 _unitOfWork.Commit();
             }

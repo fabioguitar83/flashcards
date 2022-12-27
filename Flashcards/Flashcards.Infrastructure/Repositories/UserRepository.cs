@@ -36,7 +36,7 @@ namespace Flashcards.Infrastructure.Repositories
 
             var parameters = new { EMAIL = email };
 
-            return await _unitOfWork.Connection.QueryFirstAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
+            return await _unitOfWork.Connection.QueryFirstOrDefaultAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
         }
 
         public async Task<UserEntity> GetByFlashcardAsync(int idFlashcard)
@@ -50,7 +50,7 @@ namespace Flashcards.Infrastructure.Repositories
 
             var parameters = new { ID = idFlashcard };
 
-            return await _unitOfWork.Connection.QueryFirstAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
+            return await _unitOfWork.Connection.QueryFirstOrDefaultAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
         }
 
         public async Task<UserEntity> GetByLessonAsync(int idLesson)
@@ -63,7 +63,7 @@ namespace Flashcards.Infrastructure.Repositories
 
             var parameters = new { ID = idLesson };
 
-            return await _unitOfWork.Connection.QueryFirstAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
+            return await _unitOfWork.Connection.QueryFirstOrDefaultAsync<UserEntity>(sql, parameters, _unitOfWork.Transaction);
         }
 
     }
